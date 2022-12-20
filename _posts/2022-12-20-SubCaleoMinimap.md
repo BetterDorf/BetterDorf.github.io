@@ -10,10 +10,10 @@ tasked to develop tools and features to assist them.
 
 My group was tasked with doing a minimap and tools to help use it. In
 this project the minimap is a stylized drawing of the map in a similar
-fashion as the minimaps of mario kart (_Fig. 1_).
+fashion as the minimaps of mario kart (*Fig. 1*).
 
 ![](/images/Blog1.png)<br/>
-_Figure 1 Minimaps for Mario Kart DS, Nintendo, 2005_
+*Figure 1 Minimaps for Mario Kart DS, Nintendo, 2005*
 
 To produce the minimap, the artists need a reference that is in the same
 perspective and of the same size as the desired minimap. In my group, I
@@ -23,12 +23,12 @@ interface that would call my implementation.
 
 # Inputs and outputs
 
-As input, we have the game level (_Fig. 2_) and user parameters (_Fig- 3_)
+As input, we have the game level (*Fig. 2*) and user parameters (*Fig. 3*)
 which we will use to write a PNG file to the disk. This PNG is a view
-from above of the level (_Fig. 4_) at the given coordinates.
+from above of the level (*Fig. 4*) at the given coordinates.
 
 ![](/images/Blog2.png)<br/>
-_Figure 2 Level view._
+*Figure 2 Level view.*
 
 ![](/images/Blog3.png)<br/>
 _Figure 3 Camera parameters._
