@@ -5,7 +5,7 @@ title: SubCaleo Minimap tool blogpost
 # Context
 
 The third years at the SAE in games programming are creating SubCaleo, a
-pod racing game in 3D using unreal engine. We (the 2^nd^ year) were
+pod racing game in 3D using unreal engine. We (the 2nd year) were
 tasked to develop tools and features to assist them.
 
 My group was tasked with doing a minimap and tools to help use it. In
