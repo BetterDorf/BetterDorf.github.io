@@ -12,8 +12,8 @@ My group was tasked with doing a minimap and tools to help use it. In
 this project the minimap is a stylized drawing of the map in a similar
 fashion as the minimaps of mario kart (Fig 1).
 
-![](images/Blog1.png){width="2.925in" height="3.9in"} (Fig 1) Minimaps
-for Mario Kart DS, Nintendo, 2005
+![](images/Blog1.png)
+(Fig 1) Minimaps for Mario Kart DS, Nintendo, 2005
 
 To produce the minimap, the artists need a reference that is in the same
 perspective and of the same size as the desired minimap. In my group, I
@@ -27,16 +27,14 @@ As input, we have the game level (Fig 2) and user parameters (Fig 3)
 which we will use to write a PNG file to the disk. This PNG is a view
 from above of the level (FIG 4) at the given coordinates.
 
-![](images/Blog2.png){width="5.311092519685039in"
-height="2.7515583989501313in"}
-
+![](images/Blog2.png)
 Figure 2 Level view
 
-![](images/Blog3.png){width="6.3in" height="0.19027777777777777in"}
+![](images/Blog3.png)
 
 Figure 3 Camera parameters
 
-![](images/Blog4.png){width="6.3in" height="5.695138888888889in"}
+![](images/Blog4.png)
 
 Figure 4 PNG from above
 
