@@ -12,7 +12,7 @@ My group was tasked with doing a minimap and tools to help use it. In
 this project the minimap is a stylized drawing of the map in a similar
 fashion as the minimaps of mario kart (Fig 1).
 
-![](media/image1.png){width="2.925in" height="3.9in"} (Fig 1) Minimaps
+![](images/Blog1.png){width="2.925in" height="3.9in"} (Fig 1) Minimaps
 for Mario Kart DS, Nintendo, 2005
 
 To produce the minimap, the artists need a reference that is in the same
@@ -27,16 +27,16 @@ As input, we have the game level (Fig 2) and user parameters (Fig 3)
 which we will use to write a PNG file to the disk. This PNG is a view
 from above of the level (FIG 4) at the given coordinates.
 
-![](media/image2.png){width="5.311092519685039in"
+![](images/Blog2.png){width="5.311092519685039in"
 height="2.7515583989501313in"}
 
 Figure 2 Level view
 
-![](media/image3.png){width="6.3in" height="0.19027777777777777in"}
+![](images/Blog3.png){width="6.3in" height="0.19027777777777777in"}
 
 Figure 3 Camera parameters
 
-![](media/image4.png){width="6.3in" height="5.695138888888889in"}
+![](images/Blog4.png){width="6.3in" height="5.695138888888889in"}
 
 Figure 4 PNG from above
 
@@ -55,19 +55,19 @@ the level then use its render method after which we can delete it.
 In Unreal, this means creating a c++ class inheriting from actor that
 hold a CaptureComponent2D (used for rendering).
 
-![](media/image5.png){width="5.343511592300962in" height="4.375in"}
+![](images/Blog5.png){width="5.343511592300962in" height="4.375in"}
 
 Where, in the constructor, we need to find the renderTarget and
 parameter the CaptureComponent for compatibility with the PNG format.
 
-![](media/image6.png){width="10.166666666666666in"
+![](images/Blog6.png){width="10.166666666666666in"
 height="5.233333333333333in"}
 
 Rendering to a PNG is then simply achieved by rendering the
 CaptureComponent2D's view to the renderTarget and then calling the
 Kismet Rendering Library's conversion on that:
 
-![](media/image7.png){width="10.166666666666666in" height="2.425in"}
+![](images/Blog7.png){width="10.166666666666666in" height="2.425in"}
 
 The user can then go ahead and destroy the actor as it has served its
 purpose. To simplify the workflow, I have created a static method that
