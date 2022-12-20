@@ -10,10 +10,10 @@ tasked to develop tools and features to assist them.
 
 My group was tasked with doing a minimap and tools to help use it. In
 this project the minimap is a stylized drawing of the map in a similar
-fashion as the minimaps of mario kart (Fig 1).
+fashion as the minimaps of mario kart (_Fig. 1_).
 
 ![](/images/Blog1.png)<br/>
-Figure 1 Minimaps for Mario Kart DS, Nintendo, 2005
+_Figure 1 Minimaps for Mario Kart DS, Nintendo, 2005
 
 To produce the minimap, the artists need a reference that is in the same
 perspective and of the same size as the desired minimap. In my group, I
@@ -23,20 +23,18 @@ interface that would call my implementation.
 
 # Inputs and outputs
 
-As input, we have the game level (Fig 2) and user parameters (Fig 3)
+As input, we have the game level (_Fig. 2_) and user parameters (_Fig- 3_)
 which we will use to write a PNG file to the disk. This PNG is a view
-from above of the level (FIG 4) at the given coordinates.
+from above of the level (_Fig. 4_) at the given coordinates.
 
 ![](/images/Blog2.png)<br/>
-Figure 2 Level view
+_Figure 2 Level view.
 
 ![](/images/Blog3.png)<br/>
-
-Figure 3 Camera parameters
+_Figure 3 Camera parameters.
 
 ![](/images/Blog4.png)<br/>
-
-Figure 4 PNG from above
+_Figure 4 PNG from above.
 
 # Implementation
 
@@ -50,21 +48,24 @@ disk.
 This means that, to create an image, we need to instantiate the actor in
 the level then use its render method after which we can delete it.
 
-In Unreal, this means creating a c++ class (Fig. 5) inheriting from actor that
+In Unreal, this means creating a c++ class (_Fig. 5_) inheriting from actor that
 hold a CaptureComponent2D (used for rendering).
 
 ![](/images/Blog5.png)<br/>
+_Figure 5 the ScreenshotCam class.
 
-Where, in the constructor (Fig. 6), we need to find the renderTarget and
+Where, in the constructor (_Fig. 6_), we need to find the renderTarget and
 parameter the CaptureComponent for compatibility with the PNG format.
 
 ![](/images/Blog6.png)<br/>
+_Figure 6 Constructor of the ScreenshotCam class.
 
 Rendering to a PNG is then simply achieved by rendering the
 CaptureComponent2D's view to the renderTarget and then calling the
-Kismet Rendering Library's conversion on that as shown in Fig. 7.
+Kismet Rendering Library's conversion on that as shown in _Fig. 7_.
 
 ![](/images/Blog7.png)<br/>
+_Figure 7 Render to PNG method.
 
 The user can then go ahead and destroy the actor as it has served its
 purpose. To simplify the workflow, I have created a static method that
