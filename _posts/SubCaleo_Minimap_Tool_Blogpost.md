@@ -12,7 +12,7 @@ My group was tasked with doing a minimap and tools to help use it. In
 this project the minimap is a stylized drawing of the map in a similar
 fashion as the minimaps of mario kart (Fig 1).
 
-![](/images/Blog1.png)
+![](/images/Blog1.png)\n
 Figure 1 Minimaps for Mario Kart DS, Nintendo, 2005
 
 To produce the minimap, the artists need a reference that is in the same
