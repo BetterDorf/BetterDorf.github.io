@@ -13,7 +13,7 @@ this project the minimap is a stylized drawing of the map in a similar
 fashion as the minimaps of mario kart (Fig 1).
 
 ![](/images/Blog1.png)
-(Fig 1) Minimaps for Mario Kart DS, Nintendo, 2005
+Figure 1 Minimaps for Mario Kart DS, Nintendo, 2005
 
 To produce the minimap, the artists need a reference that is in the same
 perspective and of the same size as the desired minimap. In my group, I
@@ -50,22 +50,21 @@ disk.
 This means that, to create an image, we need to instantiate the actor in
 the level then use its render method after which we can delete it.
 
-In Unreal, this means creating a c++ class inheriting from actor that
+In Unreal, this means creating a c++ class (Fig. 5) inheriting from actor that
 hold a CaptureComponent2D (used for rendering).
 
-![](/images/Blog5.png){width="5.343511592300962in" height="4.375in"}
+![](/images/Blog5.png)
 
-Where, in the constructor, we need to find the renderTarget and
+Where, in the constructor (Fig. 6), we need to find the renderTarget and
 parameter the CaptureComponent for compatibility with the PNG format.
 
-![](/images/Blog6.png){width="10.166666666666666in"
-height="5.233333333333333in"}
+![](/images/Blog6.png)
 
 Rendering to a PNG is then simply achieved by rendering the
 CaptureComponent2D's view to the renderTarget and then calling the
-Kismet Rendering Library's conversion on that:
+Kismet Rendering Library's conversion on that as shown in Fig. 7.
 
-![](/images/Blog7.png){width="10.166666666666666in" height="2.425in"}
+![](/images/Blog7.png)
 
 The user can then go ahead and destroy the actor as it has served its
 purpose. To simplify the workflow, I have created a static method that
