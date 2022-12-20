@@ -31,10 +31,10 @@ from above of the level (*Fig. 4*) at the given coordinates.
 *Figure 2 Level view.*
 
 ![](/images/Blog3.png)<br/>
-_Figure 3 Camera parameters._
+*Figure 3 Camera parameters.*
 
 ![](/images/Blog4.png)<br/>
-_Figure 4 PNG from above._
+*Figure 4 PNG from above.*
 
 # Implementation
 
@@ -48,24 +48,24 @@ disk.
 This means that, to create an image, we need to instantiate the actor in
 the level then use its render method after which we can delete it.
 
-In Unreal, this means creating a c++ class (_Fig. 5_) inheriting from actor that
+In Unreal, this means creating a c++ class (*Fig. 5*) inheriting from actor that
 hold a CaptureComponent2D (used for rendering).
 
 ![](/images/Blog5.png)<br/>
-_Figure 5 the ScreenshotCam class._
+*Figure 5 the ScreenshotCam class.*
 
-Where, in the constructor (_Fig. 6_), we need to find the renderTarget and
+Where, in the constructor (*Fig. 6*), we need to find the renderTarget and
 parameter the CaptureComponent for compatibility with the PNG format.
 
 ![](/images/Blog6.png)<br/>
-_Figure 6 Constructor of the ScreenshotCam class._
+*Figure 6 Constructor of the ScreenshotCam class.*
 
 Rendering to a PNG is then simply achieved by rendering the
 CaptureComponent2D's view to the renderTarget and then calling the
-Kismet Rendering Library's conversion on that as shown in _Fig. 7_.
+Kismet Rendering Library's conversion on that as shown in *Fig. 7*.
 
 ![](/images/Blog7.png)<br/>
-_Figure 7 Render to PNG method._
+*Figure 7 Render to PNG method.*
 
 The user can then go ahead and destroy the actor as it has served its
 purpose. To simplify the workflow, I have created a static method that
