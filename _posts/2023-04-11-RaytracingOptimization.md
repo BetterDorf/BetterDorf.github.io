@@ -2,6 +2,8 @@
 layout: post
 title: Optimizing a simple cpu raytracer
 ---
+* This will become a table of contents (this text will be scrapped).
+{:toc}
 # Introduction
 In this blogpost, we will look at the implementation and a few optimizations for a CPU raytracer. Our base implementation will be closely following that of [“Ray Tracing In One Weekend”](https://raytracing.github.io/) with some partial optimizations from [“Ray Tracing:The Next Week”](https://raytracing.github.io/) that we’ll talk about later.
 
