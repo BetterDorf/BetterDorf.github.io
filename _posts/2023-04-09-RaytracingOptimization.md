@@ -25,6 +25,6 @@ Finally, we will consider only optimizations in regards to a CPU workload and wo
 
 # The Testing Scene
 In order to provide meaningful tests and benchmarks, we used a consistent set of scenes throughout our performance testing.
-![Scene with 5 spheres](/images/Scene1.png) ![Scene with 68 spheres](/images/Scene8.png) ![Scene with 904 spheres](/images/Scene30.png)
+![Scene with 5 spheres](/images/Scene1.png)<br> ![Scene with 68 spheres](/images/Scene8.png)<br> ![Scene with 904 spheres](/images/Scene30.png)<br>
 
 These scenes include five spheres (one for the ground and three larger spheres, plus an additional stray sphere), 68 spheres, and 904 spheres respectively. The location of the stray spheres determined by a seeded random distribution. By benchmarking on scenes of varying sizes and complexity, we were able to evaluate how well our optimizations scaled with the number of objects in the scene. In all cases we will be working with 50 samples per pixels and a depth of 30 on a resolution of 480 by 360 pixels. In this context, samples per pixels mean the number of rays for a given pixel while depth refers to how many rebounds we allow a ray to have before we decide that it is “lost”.
