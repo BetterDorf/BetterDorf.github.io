@@ -63,7 +63,7 @@ This first implementation had these results :<br>
         <td>904 Spheres</td>
     </tr>
     <tr>
-        <td>**Naive**</td>
+      <td><b>Naive</b></td>
         <td>2&#39;520 ms</td>
         <td>8&#39;063 ms</td>
         <td>100&#39;788 ms</td>
@@ -88,13 +88,42 @@ Are there some methods that we could analogously use in our raytracer ? Well, ye
 The benefit of the BVH is immediately obvious when we consider that we will quickly descend the tree narrowing down on good candidates and far-off spheres will all be eliminated in a few checks if we do not hit their parent nodes. In the worst cases (for instance, if all spheres are tightly bundled together) the time complexity is not improved, remaining **O(n)**. But given a more typical situation the BVH will result in **O(logn)** calculations. Not to mention that most of these calculations are done on ray to bounding volumes intersections rather than ray to sphere (or any more complex collider type) further reducing the time needed to perform all the checks.
 
 A simple BVH implementation can be found at [Ray Tracing:The Next Week](https://raytracing.github.io/books/RayTracingTheNextWeek.html) which divides along the spheres based on the x, y or z axes. Implementing it as-is yields the following results for us : <br>
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |<br>
-| **BVH**           | 5'263 ms      | 9'386 ms      | 25'058  ms    |<br>
+<table>
+    <tr>
+        <td>Technique</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+    </tr>
+    <tr>
+      <td><b>BVH</b></td>
+        <td>5&#39;263 ms</td>
+        <td>9&#39;386 ms</td>
+        <td>25&#39;058  ms</td>
+    </tr>
+</table>
 
 Which can be compared with our base performances:
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |<br>
-| Naive         | **2'520 ms**      | **8'063 ms**      | 100'788 ms    |  
-| **BVH**           | 5'263 ms      | 9'386 ms      | **25'058  ms**    |  
+<table>
+    <tr>
+        <td>Technique</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+    </tr>
+    <tr>
+        <td>Naive</td>
+        <td><br>2&#39;520 ms</br></td>
+        <td><br>8&#39;063 ms</br></td>
+        <td>100&#39;788 ms</td>
+    </tr>
+    <tr>
+        <td><b>BVH</b></td>
+        <td>5&#39;263 ms</td>
+        <td>9&#39;386 ms</td>
+        <td><b>25&#39;058  ms</b></td>
+    </tr>
+</table>
 
 We can clearly see a net increase in performance for our very large scene but the two other scenes are now slower than before. Why is that ?
 Something that we did not consider previously is the quality of the BVH. Simply put, if all bounding volumes are huge / inaccurate to the children they own we will have a BVH where we will have to traverse the whole tree every time we want to perform hit detection. While still in the same complexity domain **O(n)** we are doing twice the work when our BVH structure doesn’t closely resemble the spatial relationships between our spheres.
@@ -110,20 +139,70 @@ Furthermore, to avoid dereferencing pointers and losing time with inheritance we
 ![Bvh node class file showing that it holds indices for the position of the children nodes and spheres in the arrays of the world](/images/codeImage_11.png)<br>
 
 If you are worrying at this point for the growing complexity of the setup phase, don’t. As you can see from these numbers :
-| Method        | 5 Spheres     | 68 Spheres    | 904 Spheres   | 4100 Spheres  | 10'000 Spheres|  
-| Making BVH    | >0,001 ms     | 0,011 ms      | 1,86 ms       | 32,5 ms       | 189 ms        |  
+<table>
+    <tr>
+        <td>Method</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+        <td>4100 Spheres</td>
+        <td>10&#39;000 Spheres</td>
+    </tr>
+    <tr>
+        <td>Making BVH</td>
+        <td>&gt;0,001 ms</td>
+        <td>0,011 ms</td>
+        <td>1,86 ms</td>
+        <td>32,5 ms</td>
+        <td>189 ms</td>
+    </tr>
+</table>
 
 Constructing the BVH takes negligible time in comparison to rendering.
 
 Speaking of time here are the improvements that we see with this new implementation :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
-| **Aglo BVH**      | 3'190 ms      | 6'415 ms      | 10'087  ms    |  
+<table>
+    <tr>
+        <td>Technique</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+    </tr>
+    <tr>
+      <td><b>Aglo BVH</b></td>
+        <td>3&#39;190 ms</td>
+        <td>6&#39;415 ms</td>
+        <td>10&#39;087  ms</td>
+    </tr>
+</table>
 
 This performs much better in high-complexity scenes without sacrificing as much for the simpler ones as we can see when put side-by-side :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
-| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |  
-| BVH           | 5'263 ms      | 9'386 ms      | 25'058 ms     |
-| **Aglo BVH**      | 3'190 ms      | **6'415 ms**      | **10'087 ms**     |
+<table>
+    <tr>
+        <td>Technique</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+    </tr>
+    <tr>
+        <td>Naive</td>
+      <td><br>2&#39;520 ms</br></td>
+        <td>8&#39;063 ms</td>
+        <td>100&#39;788 ms</td>
+    </tr>
+    <tr>
+        <td>BVH</td>
+        <td>5&#39;263 ms</td>
+        <td>9&#39;386 ms</td>
+        <td>25&#39;058 ms</td>
+    </tr>
+    <tr>
+        <td><b>Aglo BVH</b></td>
+        <td>3&#39;190 ms</td>
+        <td><b>6&#39;415 ms</b></td>
+        <td><b>10&#39;087 ms</b></td>
+    </tr>
+</table>
 
 From this point on, we will refer with BVH to the agglomerative BVH implementation and will no longer consider the first implementation.
 
@@ -135,30 +214,113 @@ In our program we decided to use [OpenMP’s library](https://www.openmp.org/). 
 ![Code of the main loop where we send our rays into the scen with the omp command above it](/images/codeImage_12.png)<br>
 
 Yield those results without the BVH :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
-| **Naive MT**      | 3'195 ms      | 3'887 ms      | 19'597 ms     |
+<table>
+    <tr>
+        <td>Technique</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+    </tr>
+    <tr>
+      <td><b>Naive MT</b></td>
+        <td>3&#39;195 ms</td>
+        <td>3&#39;887 ms</td>
+        <td>19&#39;597 ms</td>
+    </tr>
+</table>
 
 Which performs much better than the single-threaded version in most cases :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
-| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |  
-| **Naive MT**      | 3'195 ms      | **3'887 ms**      | **19'597 ms**     |
+<table>
+    <tr>
+        <td>Technique</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+    </tr>
+    <tr>
+        <td>Naive</td>
+      <td><b>2&#39;520 Ms</b></td>
+        <td>8&#39;063 Ms</td>
+        <td>100&#39;788 Ms</td>
+    </tr>
+    <tr>
+        <td><b>naive Mt</b></td>
+        <td>3&#39;195 Ms</td>
+      <td><b>3&#39;887 Ms</b></td>
+      <td><b>19&#39;597 Ms</b></td>
+    </tr>
+</table>
 
 We can observe a slight overhead cost that makes it slower for small scenes but as soon as the complexity increases a little the benefits are immediately obvious.
 This leads us to combining both optimizations into one :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
-| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |  
-| Naive MT      | 3'195 ms      | 3'887 ms      | 19'597 ms     |  
-| **MT BVH**        | 3'284 ms      | **3'773 ms**      | **4'746 ms**      |
+<table>
+    <tr>
+        <td>Technique</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+    </tr>
+    <tr>
+        <td>Naive</td>
+        <td><b>2&#39;520 ms</b></td>
+        <td>8&#39;063 ms</td>
+        <td>100&#39;788 ms</td>
+    </tr>
+    <tr>
+        <td>Naive MT</td>
+        <td>3&#39;195 ms</td>
+        <td>3&#39;887 ms</td>
+        <td>19&#39;597 ms</td>
+    </tr>
+    <tr>
+        <td><b>MT BVH</b></td>
+        <td>3&#39;284 ms</td>
+        <td><b>3&#39;773 ms</b></td>
+        <td><b>4&#39;746 ms</b></td>
+    </tr>
+</table>
 
 We can obverse a significant speedup for the complex scene where it's only 22% slower going from 68 to 904 spheres.
 
 This leads us to our final comparison table :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
-| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |  
-| BVH           | 5'263 ms      | 9'386 ms      | 25'058 ms     |  
-| Aglo BVH      | 3'190 ms      | 6'415 ms      | 10'087 ms     |  
-| Naive MT      | 3'195 ms      | 3'887 ms      | 19'597 ms     |  
-| **MT BVH**        | 3'284 ms      | **3'773 ms**      | **4'746 ms**      |
+<table>
+    <tr>
+        <td>Technique</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+    </tr>
+    <tr>
+        <td>Naive</td>
+      <td><b>2&#39;520 ms</b></td>
+        <td>8&#39;063 ms</td>
+        <td>100&#39;788 ms</td>
+    </tr>
+    <tr>
+        <td>BVH</td>
+        <td>5&#39;263 ms</td>
+        <td>9&#39;386 ms</td>
+        <td>25&#39;058 ms</td>
+    </tr>
+    <tr>
+        <td>Aglo BVH</td>
+        <td>3&#39;190 ms</td>
+        <td>6&#39;415 ms</td>
+        <td>10&#39;087 ms</td>
+    </tr>
+    <tr>
+        <td>Naive MT</td>
+        <td>3&#39;195 ms</td>
+        <td>3&#39;887 ms</td>
+        <td>19&#39;597 ms</td>
+    </tr>
+    <tr>
+      <td><b>MT BVH</b></td>
+        <td>3&#39;284 ms</td>
+      <td><b>3&#39;773 ms</b></td>
+      <td><b>4&#39;746 ms</b></td>
+    </tr>
+</table>
 
 For those that prefer graphical comparisons : <br>
 ![](/images/5Obj.PNG)<br>
