@@ -43,6 +43,6 @@ We will notice with the next few chapter that the performance displayed here is 
 
 A quick look at a profiling tool reveals that we are currently using most of our render time in the hit function.
 
-![Picture of Tracy profiler that show most of the time being taken by hit functions](/images/TracyCapture.png)<br>
+![Picture of Tracy profiler that show most of the time being taken by hit functions](/images/TracyCapture.PNG)<br>
 
 Why is that ? The key to the answer is in how our performance grows with scene size.
