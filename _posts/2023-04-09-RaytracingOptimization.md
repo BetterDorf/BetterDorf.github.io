@@ -73,3 +73,6 @@ Something that we did not consider previously is the quality of the BVH. Simply 
 # Agglomerative Bounding Volumes Hierarchy.
 To construct a better BVH we will take an agglomerative approach where we start with the spheres and find their closest neighbor to agglomerate into a new parent node. We then do the same to all those parent nodes and again etc… until we are left with a single parent node. This approach typically yields much BVH that fit their elements much better[^1] because it was constructed with the closeness of its elements as its base heuristic.
 [^1]:  Ericson, Christer (2005). "Hierarchy Design Issues". Real-Time collision detection. Morgan Kaufmann Series in Interactive 3-D Technology. Morgan Kaufmann. pp. 236–7. ISBN 1-55860-732-3.
+
+Our implementation for an agglomerative BVH takes inspiration from [this](https://www.cs.cmu.edu/~blelloch/papers/GHFB13.pdf) [^2] paper from Carnegie Mellon University. With the alteration that we aren’t finding the closest pair each time but simply finding the closest sphere to our current sphere.
+[^2]: Gu, Yan; He, Yong; Fatahalian, Kayvon; Blelloch, Guy (2013). "Efficient BVH Construction via Approximate Agglomerative Clustering" (PDF). HPG '13: Proceedings of the 5th High-Performance Graphics Conference.
