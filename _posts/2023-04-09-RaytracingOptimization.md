@@ -45,4 +45,12 @@ A quick look at a profiling tool reveals that we are currently using most of our
 
 ![Picture of Tracy profiler that show most of the time being taken by hit functions](/images/TracyCapture.PNG)<br>
 
-Why is that ? The key to the answer is in how our performance grows with scene size.
+Why is that ? The key to the answer is in how our rendering time grows with scene size.
+
+In this naïve implementation, every time a ray asks what it hits it must interrogate each sphere in our scene. This results in massive time costs because we are computing intersections tests between each ray and each sphere. This means 200 x 904 = **180800 tests** at a minimum per pixel and 480 x 360 x 180800 = **31’242’240’000** for the whole screen. More than 31 billion tests without considering that most ray bounce at least once. This makes it by far our most called function and our biggest time sink.
+
+# Bounding volumes Hierarchy
+This problem of performing many intersections test is quite reminiscent of physics engine. In that context the problem is typically approached with the concepts of broad phase and narrow phase. We spend some time in the broad phase determining which collisions are possible / likely to occur before performing the check “for real” in the narrow phase between the possible collisions. A common broad phase method is to somehow separate the space into regions so that we can easily tell if objects are too far apart to collision.
+
+*[BVH]: Bounding Volume Hierarchy
+Are there some methods that we could analogously use in our raytracer ? Well, yes there is. What we will use is a Bounding Volume Hierarchy (BVH). The structure of the BVH is a tree where each node has a bounding volume in which all its child nodes fit inside. To figure out which sphere we would hit with a ray we would first interrogate the root node, if we hit its bounding volume, we then check interrogate its children bounding volumes etc… until we arrive at a leaf node which would be our hit sphere. The tree typically has a similar amount of parent nodes as there are of leaf objects i.e. 904 objects yields around 904 more nodes in our BVH.
