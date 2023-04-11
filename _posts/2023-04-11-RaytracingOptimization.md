@@ -34,7 +34,7 @@ We started by following closely the design of [Ray Tracing In One Weekend](https
 
 Another change was the flattening of the hit function. It used to work by recursion, calling hit again when a ray hit an object which we changed to all be processed in a single hit call. This is typically easier for most compilers to optimize and decrease the amount of overhead induced by growing the call stack unnecessarily.
 
-This first implementation had these results :
+This first implementation had these results :<br>
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
 | ------------- | ------------- | ------------- | ------------- |
 | Naive         | 2'520 ms      | 8'063 ms      | 100'788 ms    |
@@ -56,7 +56,7 @@ Are there some methods that we could analogously use in our raytracer ? Well, ye
 
 The benefit of the BVH is immediately obvious when we consider that we will quickly descend the tree narrowing down on good candidates and far-off spheres will all be eliminated in a few checks if we do not hit their parent nodes. In the worst cases (for instance, if all spheres are tightly bundled together) the time complexity is not improved, remaining **O(n)**. But given a more typical situation the BVH will result in **O(logn)** calculations. Not to mention that most of these calculations are done on ray to bounding volumes intersections rather that ray to sphere (or any more complex collider type) further reducing the time needed to perform all the checks.
 
-A simple BVH implementation can be found at [Ray Tracing:The Next Week](https://raytracing.github.io/books/RayTracingTheNextWeek.html) which divides along the spheres based on the x, y or z axes. Implementing it as-is yields the following results for us : 
+A simple BVH implementation can be found at [Ray Tracing:The Next Week](https://raytracing.github.io/books/RayTracingTheNextWeek.html) which divides along the spheres based on the x, y or z axes. Implementing it as-is yields the following results for us : <br>
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
 | ------------- | ------------- | ------------- | ------------- |
 | **BVH**       | 5'263 ms      | 9'386 ms      | 25'058  ms    |
