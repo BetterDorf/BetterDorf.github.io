@@ -5,11 +5,7 @@ title: Optimizing a simple cpu raytracer
 * This will become a table of contents (this text will be scrapped).
 {:toc}
 # Introduction
-| Priority apples | Second priority | Third priority |
-|-------|--------|---------|
-| ambrosia | gala | red delicious |
-| pink lady | jazz | macintosh |
-| honeycrisp | granny smith | fuji |
+
 In this blogpost, we will look at the implementation and a few optimizations for a CPU raytracer. Our base implementation will be closely following that of [“Ray Tracing In One Weekend”](https://raytracing.github.io/) with some partial optimizations from [“Ray Tracing:The Next Week”](https://raytracing.github.io/) that we’ll talk about later.
 
 # Raytracer ?
@@ -42,9 +38,9 @@ We started by following closely the design of [Ray Tracing In One Weekend](https
 Another change was the flattening of the hit function. It used to work by recursion, calling hit again when a ray hit an object which we changed to all be processed in a single hit call. This is typically easier for most compilers to optimize and decrease the amount of overhead induced by growing the call stack unnecessarily.
 
 This first implementation had these results :<br>
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
-| ------------- | ------------- | ------------- | ------------- |
-| Naive         | 2'520 ms      | 8'063 ms      | 100'788 ms    |
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
+| ------------- | ------------- | ------------- | ------------- |  
+| Naive         | 2'520 ms      | 8'063 ms      | 100'788 ms    |  
 
 We will notice with the next few chapter that the performance displayed here is quite alright for small scenes. But as we scale it becomes exponentially worse with the complexity of the scene.
 
