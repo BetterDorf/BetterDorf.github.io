@@ -38,8 +38,20 @@ We started by following closely the design of [Ray Tracing In One Weekend](https
 Another change was the flattening of the hit function. It used to work by recursion, calling hit again when a ray hit an object which we changed to all be processed in a single hit call. This is typically easier for most compilers to optimize and decrease the amount of overhead induced by growing the call stack unnecessarily.
 
 This first implementation had these results :<br>
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |<br>
-| Naive         | 2'520 ms      | 8'063 ms      | 100'788 ms    |<br>
+<table>
+    <tr>
+        <td>Technique</td>
+        <td>5 Spheres</td>
+        <td>68 Spheres</td>
+        <td>904 Spheres</td>
+    </tr>
+    <tr>
+        <td>**Naive**</td>
+        <td>2&#39;520 ms</td>
+        <td>8&#39;063 ms</td>
+        <td>100&#39;788 ms</td>
+    </tr>
+</table>
 
 We will notice with the next few chapter that the performance displayed here is quite alright for small scenes. But as we scale it becomes exponentially worse with the complexity of the scene.
 
