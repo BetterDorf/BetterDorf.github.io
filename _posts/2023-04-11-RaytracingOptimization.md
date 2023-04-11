@@ -36,6 +36,23 @@ These scenes include five spheres (one for the ground and three larger spheres, 
 We started by following closely the design of [Ray Tracing In One Weekend](https://raytracing.github.io/). Although we also coded in cpp, we disagreed with some of the design decisions made. For instance, we eliminated most shared_ptr from the codebase as sharing ownership of objects wasn't necessary and we believe that shared_ptr should only be used when other ownerships model fail. Instead we decided to work only with the objects directly rather than holding pointers to where they were created.
 
 Another change was the flattening of the hit function. It used to work by recursion, calling hit again when a ray hit an object which we changed to all be processed in a single hit call. This is typically easier for most compilers to optimize and decrease the amount of overhead induced by growing the call stack unnecessarily.
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
 
 This first implementation had these results :<br>
 <table>
