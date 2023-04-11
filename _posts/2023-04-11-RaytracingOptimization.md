@@ -34,6 +34,11 @@ We started by following closely the design of [Ray Tracing In One Weekend](https
 
 Another change was the flattening of the hit function. It used to work by recursion, calling hit again when a ray hit an object which we changed to all be processed in a single hit call. This is typically easier for most compilers to optimize and decrease the amount of overhead induced by growing the call stack unnecessarily.
 
+| Syntax    | Description |
+| --------- | ----------- |
+| Header    | Title       |
+| Paragraph | Text        |
+
 This first implementation had these results :
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
 | ------------- | ------------- | ------------- | ------------- |
