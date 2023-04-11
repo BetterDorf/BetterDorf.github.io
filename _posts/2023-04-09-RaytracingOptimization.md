@@ -66,3 +66,10 @@ Which can be compared with our base performances:
 | ------------- | ------------- | ------------- | ------------- |
 | Naive         | **2'520 ms**  | **8'063 ms**  | 100'788 ms    |
 | BVH           | 5'263 ms      | 9'386 ms      | **25'058  ms**|
+
+We can clearly see a net increase in performance for our very large scene but the two other scenes are now slower than before. Why is that ?
+Something that we did not consider previously is the quality of the BVH. Simply put, if all bounding volumes are huge / inaccurate to the children they own we will have a BVH where we will have to traverse the whole tree every time we want to perform hit detection. While still in the same complexity domain **O(n)** we are doing twice the work when our BVH structure doesn’t closely resemble the spatial relationships between our spheres.
+
+# Agglomerative Bounding Volumes Hierarchy.
+To construct a better BVH we will take an agglomerative approach where we start with the spheres and find their closest neighbor to agglomerate into a new parent node. We then do the same to all those parent nodes and again etc… until we are left with a single parent node. This approach typically yields much BVH that fit their elements much better[^1] because it was constructed with the closeness of its elements as its base heuristic.
+[^1]:  Ericson, Christer (2005). "Hierarchy Design Issues". Real-Time collision detection. Morgan Kaufmann Series in Interactive 3-D Technology. Morgan Kaufmann. pp. 236–7. ISBN 1-55860-732-3.
