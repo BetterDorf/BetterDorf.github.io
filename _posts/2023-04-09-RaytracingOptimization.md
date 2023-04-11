@@ -142,3 +142,17 @@ For those that prefer graphical comparisons : <br>
 ![](/images/5Obj.PNG)<br>
 ![](/images/68Obj.PNG)<br>
 ![](/images/904Obj.PNG)<br>
+
+# Going further
+We will stop there our exploration of optimizations for our CPU raytracer but let us conclude by mentioning a few areas that we could still improve upon.
+
+Firstly, while openMP provides a great utility, simply tacking on a command won't yield the best possible results for a multi-threaded applications. Because we don't need to refactor our code, we aren't removing any race conditions and we can see in a profiler that a significant amount of time is lost waiting. Disentangling these relationships and using a more explicit task scheduler would surely improve our ability to paralellize rays calculations.
+
+Sorting the data in our world could also be a relevant optimization as sorting data typically takes much less time and would allow for fewer cache misses. The sorting would be done so that the left child of a node is always the node right after in our world's array so that a cacheline would always grab a relevant chain of parent / children nodes. This would allow us to have the child cached next to its parent 50% of the time.
+
+Typically, compilation flags can make a big impact on an application's performances. However in our particular case, we didn't find any significant improvement by varying the compilation flags.
+
+Finally, a small hack that was given to us by [Frédéric Dubouchet](https://github.com/anirul) is to bypass the BVH system entirely for the first ray cast of any given ray (that is to say, use the BVH for all subsequent rebounds) and instead compute at startup which spheres intersect with an array of horizontal and vertical planes and store thoses boolean results. Each plane denotes a row or column of pixels so that when we cast a ray for a pixel at coordinate y = 7 and x = 32 we check only the spheres that are intersecting with the 7th horizontal plane and the 32th vertical plane.
+Although powerful, this trick wouldn't work as is for us in this implementation because we shoot ray with slight variations in origin to simulate a camera's focal length.
+
+This concludes our small tour of the optimizations we performed on the classic [“Ray Tracing In One Weekend”](https://raytracing.github.io/).
