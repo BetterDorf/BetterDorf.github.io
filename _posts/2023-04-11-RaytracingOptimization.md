@@ -39,12 +39,6 @@ Another change was the flattening of the hit function. It used to work by recurs
         }
 </style>
 
-| Syntax    | Description |
-| --------- | ----------- |
-| Header    | Title       |
-| Paragraph | Text        |
-{: .tablelines}
-
 This first implementation had these results :<br>
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
 | ------------- | ------------- | ------------- | ------------- |
