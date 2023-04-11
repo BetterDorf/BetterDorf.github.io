@@ -37,7 +37,7 @@ Another change was the flattening of the hit function. It used to work by recurs
 This first implementation had these results :
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
 | ------------- | ------------- | ------------- | ------------- |
-| **Naive**     | 2'520 ms      | 8'063 ms      | 100'788 ms    |
+| Naive         | 2'520 ms      | 8'063 ms      | 100'788 ms    |
 
 We will notice with the next few chapter that the performance displayed here is quite alright for small scenes. But as we scale it becomes exponentially worse with the complexity of the scene.
 
