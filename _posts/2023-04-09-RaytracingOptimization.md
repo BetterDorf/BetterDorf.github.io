@@ -37,7 +37,7 @@ Another change was the flattening of the hit function. It used to work by recurs
 This first implementation had these results :
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
 | ------------- | ------------- | ------------- | ------------- |
-| Naive         | 2'520 ms      | 8'063 ms      | 100'788 ms    |
+| **Naive**     | 2'520 ms      | 8'063 ms      | 100'788 ms    |
 
 We will notice with the next few chapter that the performance displayed here is quite alright for small scenes. But as we scale it becomes exponentially worse with the complexity of the scene.
 
@@ -59,13 +59,13 @@ The benefit of the BVH is immediately obvious when we consider that we will quic
 A simple BVH implementation can be found at [Ray Tracing:The Next Week](https://raytracing.github.io/books/RayTracingTheNextWeek.html) which divides along the spheres based on the x, y or z axes. Implementing it as-is yields the following results for us : 
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
 | ------------- | ------------- | ------------- | ------------- |
-| BVH           | 5'263 ms      | 9'386 ms      | 25'058  ms    |
+| **BVH**       | 5'263 ms      | 9'386 ms      | 25'058  ms    |
 
 Which can be compared with our base performances:
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
 | ------------- | ------------- | ------------- | ------------- |
 | Naive         | **2'520 ms**  | **8'063 ms**  | 100'788 ms    |
-| BVH           | 5'263 ms      | 9'386 ms      | **25'058  ms**|
+| **BVH**       | 5'263 ms      | 9'386 ms      | **25'058  ms**|
 
 We can clearly see a net increase in performance for our very large scene but the two other scenes are now slower than before. Why is that ?
 Something that we did not consider previously is the quality of the BVH. Simply put, if all bounding volumes are huge / inaccurate to the children they own we will have a BVH where we will have to traverse the whole tree every time we want to perform hit detection. While still in the same complexity domain **O(n)** we are doing twice the work when our BVH structure doesn’t closely resemble the spatial relationships between our spheres.
@@ -98,3 +98,42 @@ This performs much better in high-complexity scenes without sacrificing as much 
 | Naive         | **2'520 ms**  | 8'063 ms      | 100'788 ms    |
 | BVH           | 5'263 ms      | 9'386 ms      | 25'058 ms     |
 | **Aglo BVH**  | 3'190 ms      | **6'415 ms**  | **10'087 ms** |
+
+From this point on, we will refer with BVH to the agglomerative BVH implementation and will no longer consider the first implementation.
+
+# The low hanging-fruit
+The obvious optimization from the start when doing a raytracer is always going to be multithreading.
+Since there is no dependence between rays we can always start computing the next one without waiting for results. This makes raytracing a fantastic candidate for multithreading.
+
+In our program we decided to use [OpenMP’s library](https://www.openmp.org/). This provides a very quick way to send tasks to multiple threads without major code refactoring. Simply tacking on this command '#pragma omp parallel for schedule(static)' above our main loop like so :<br>
+![Code of the main loop where we send our rays into the scen with the omp command above it](/images/codeImage_12.png)<br>
+
+Yield those results without the BVH :
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| ------------- | ------------- | ------------- | ------------- |
+| **Naive MT**  | 3'195 ms      | 3'887 ms      | 19'597 ms     |
+
+Which performs much better than the single-threaded version in most cases :
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| ------------- | ------------- | ------------- | ------------- |
+| Naive         | **2'520 ms**  | 8'063 ms      | 100'788 ms    |
+| **Naive MT**  | 3'195 ms      | **3'887 ms**  | **19'597 ms** |
+
+We can observe a slight overhead cost that makes it slower for small scenes but as soon as the complexity increases a little the benefits are immediately obvious.
+This leads us to combining both optimizations into one :
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| ------------- | ------------- | ------------- | ------------- |
+| Naive         | **2'520 ms**  | 8'063 ms      | 100'788 ms    |
+| Naive MT      | 3'195 ms      | 3'887 ms      | 19'597 ms     |
+| **MT BVH**    | 3'284 ms      | **3'773 ms**  | **4'746 ms**  |
+
+We can obverse a significant speedup for the complex scene where it's only 22% slower going from 68 to 904 spheres.
+
+This leads us to our final comparison table :
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| ------------- | ------------- | ------------- | ------------- |
+| Naive         | **2'520 ms**  | 8'063 ms      | 100'788 ms    |
+| BVH           | 5'263 ms      | 9'386 ms      | 25'058 ms     |
+| Aglo BVH      | 3'190 ms      | 6'415 ms      | 10'087 ms     |
+| Naive MT      | 3'195 ms      | 3'887 ms      | 19'597 ms     |
+| **MT BVH**    | 3'284 ms      | **3'773 ms**  | **4'746 ms**  |
