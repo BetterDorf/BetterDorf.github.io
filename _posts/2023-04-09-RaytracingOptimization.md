@@ -84,4 +84,5 @@ If you are worrying at this point for the growing complexity of the setup phase,
 | Method        | 5 Spheres     | 68 Spheres    | 904 Spheres   | 4100 Spheres  | 10'000 Spheres|
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | Making BVH    | >0,001 ms     | 0,011 ms      | 1,86 ms       | 32,5 ms       | 189 ms        |
+
 Constructing the BVH takes negligible time in comparison to rendering.
