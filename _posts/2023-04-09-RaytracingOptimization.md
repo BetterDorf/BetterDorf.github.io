@@ -3,14 +3,14 @@ layout: post
 title: Optimizing a simple cpu raytracer
 ---
 # Context
-In this blogpost, we will look at the implementation and a few optimizations for a CPU raytracer. Our base implementation will be closely following that of [“Raytracing in a weekend”](https://raytracing.github.io/) with some partial optimizations from [“Raytracing the next week”](https://raytracing.github.io/) that we’ll talk about later.
+In this blogpost, we will look at the implementation and a few optimizations for a CPU raytracer. Our base implementation will be closely following that of [“Ray Tracing In One Weekend”](https://raytracing.github.io/) with some partial optimizations from [“Ray Tracing:The Next Week”](https://raytracing.github.io/) that we’ll talk about later.
 
 # Raytracer ?
 Before we talk about the specifics of our raytracer we should first cover what a raytracer even is.
 
 Raytracing is a technique used in computer graphics to generate images by tracing the path of light as it interacts with objects in a scene. In a CPU raytracer, each pixel in the image is rendered by calculating the color value of a ray that intersects with a 3D object in the scene. While raytracing is known for producing high-quality images, it can be computationally expensive, particularly when rendering complex scenes. In short, for each pixel on our screen, we’ll shoot multiple rays into our scene and compute the color they achieve as they bounce on volumes etc…
 
-In this blog post, we'll discuss our implementation of a CPU raytracer, which is based on the popular tutorial "Raytracing in a weekend." We'll also explore some optimizations we made to improve the performance of the raytracer. Specifically, we'll discuss optimizations we implemented from "Raytracing the next week," as well as some additional optimizations we attempted. The performance improvements we made to the raytracer were significant: while the naive version took several minutes to render a simple scene, the more optimized version was able to render the same scene in just a few seconds. This speedup makes it possible to generate high-quality images much more quickly. Although in our particular case our raytracer remains much too slow for real-time applications like video games.
+In this blog post, we'll discuss our implementation of a CPU raytracer, which is based on the popular tutorial "Ray Tracing In One Weekend". We'll also explore some optimizations we made to improve the performance of the raytracer. Specifically, we'll discuss optimizations we implemented from "Raytracing the next week," as well as some additional optimizations we attempted. The performance improvements we made to the raytracer were significant: while the naive version took several minutes to render a simple scene, the more optimized version was able to render the same scene in just a few seconds. This speedup makes it possible to generate high-quality images much more quickly. Although in our particular case our raytracer remains much too slow for real-time applications like video games.
 
 # Optimization philosophy
 Our goal in this experiment is to improve the performances of a CPU raytracer on a variety of scene complexities without altering the behavior of the raytracer.
@@ -30,7 +30,7 @@ In order to provide meaningful tests and benchmarks, we used a consistent set of
 These scenes include five spheres (one for the ground and three larger spheres, plus an additional stray sphere), 68 spheres, and 904 spheres respectively. The location of the stray spheres determined by a seeded random distribution. By benchmarking on scenes of varying sizes and complexity, we were able to evaluate how well our optimizations scaled with the number of objects in the scene. In all cases we will be working with 50 samples per pixels and a depth of 30 on a resolution of 480 by 360 pixels. In this context, samples per pixels mean the number of rays for a given pixel while depth refers to how many rebounds we allow a ray to have before we decide that it is “lost”.
 
 # First Implementation
-We started by following closely the design of [Raytracing in a weekend](https://raytracing.github.io/). Although we also coded in cpp, we disagreed with some of the design decisions made. For instance, we eliminated most shared_ptr from the codebase as sharing ownership of objects wasn't necessary and we believe that shared_ptr should only be used when other ownerships model fail. Instead we decided to work only with the objects directly rather than holding pointers to where they were created.
+We started by following closely the design of [Ray Tracing In One Weekend](https://raytracing.github.io/). Although we also coded in cpp, we disagreed with some of the design decisions made. For instance, we eliminated most shared_ptr from the codebase as sharing ownership of objects wasn't necessary and we believe that shared_ptr should only be used when other ownerships model fail. Instead we decided to work only with the objects directly rather than holding pointers to where they were created.
 
 Another change was the flattening of the hit function. It used to work by recursion, calling hit again when a ray hit an object which we changed to all be processed in a single hit call. This is typically easier for most compilers to optimize and decrease the amount of overhead induced by growing the call stack unnecessarily.
 
@@ -52,5 +52,17 @@ In this naïve implementation, every time a ray asks what it hits it must interr
 # Bounding volumes Hierarchy
 This problem of performing many intersections test is quite reminiscent of physics engine. In that context the problem is typically approached with the concepts of broad phase and narrow phase. We spend some time in the broad phase determining which collisions are possible / likely to occur before performing the check “for real” in the narrow phase between the possible collisions. A common broad phase method is to somehow separate the space into regions so that we can easily tell if objects are too far apart to collision.
 
-*[BVH]: Bounding Volume Hierarchy
 Are there some methods that we could analogously use in our raytracer ? Well, yes there is. What we will use is a Bounding Volume Hierarchy (BVH). The structure of the BVH is a tree where each node has a bounding volume in which all its child nodes fit inside. To figure out which sphere we would hit with a ray we would first interrogate the root node, if we hit its bounding volume, we then check interrogate its children bounding volumes etc… until we arrive at a leaf node which would be our hit sphere. The tree typically has a similar amount of parent nodes as there are of leaf objects i.e. 904 objects yields around 904 more nodes in our BVH.
+
+The benefit of the BVH is immediately obvious when we consider that we will quickly descend the tree narrowing down on good candidates and far-off spheres will all be eliminated in a few checks if we do not hit their parent nodes. In the worst cases (for instance, if all spheres are tightly bundled together) the time complexity is not improved, remaining **O(n)**. But given a more typical situation the BVH will result in **O(logn)** calculations. Not to mention that most of these calculations are done on ray to bounding volumes intersections rather that ray to sphere (or any more complex collider type) further reducing the time needed to perform all the checks.
+
+A simple BVH implementation can be found at [Ray Tracing:The Next Week](https://raytracing.github.io/books/RayTracingTheNextWeek.html) which divides along the spheres based on the x, y or z axes. Implementing it as-is yields the following results for us : 
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| ------------- | ------------- | ------------- | ------------- |
+| BVH           | 5'263 ms      | 9'386 ms      | 25'058  ms    |
+
+Which can be compared with our base performances:
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| ------------- | ------------- | ------------- | ------------- |
+| Naive         | 2'520 ms      | 8'063 ms      | 100'788 ms    |
+| BVH           | 5'263 ms      | 9'386 ms      | 25'058  ms    |
