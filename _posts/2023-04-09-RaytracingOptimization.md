@@ -86,3 +86,15 @@ If you are worrying at this point for the growing complexity of the setup phase,
 | Making BVH    | >0,001 ms     | 0,011 ms      | 1,86 ms       | 32,5 ms       | 189 ms        |
 
 Constructing the BVH takes negligible time in comparison to rendering.
+
+Speaking of time here are the improvements that we see with this new implementation :
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| ------------- | ------------- | ------------- | ------------- |
+| **Aglo BVH**  | 3'190 ms      | 6'415 ms      | 10'087  ms    |
+
+This performs much better in high-complexity scenes without sacrificing as much for the simpler ones as we can see when put side-by-side :
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| ------------- | ------------- | ------------- | ------------- |
+| Naive         | **2'520 ms**  | 8'063 ms      | 100'788 ms    |
+| BVH           | 5'263 ms      | 9'386 ms      | 25'058 ms     |
+| **Aglo BVH**  | 3'190 ms      | **6'415 ms**  | **10'087 ms** |
