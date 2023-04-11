@@ -64,5 +64,5 @@ A simple BVH implementation can be found at [Ray Tracing:The Next Week](https://
 Which can be compared with our base performances:
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
 | ------------- | ------------- | ------------- | ------------- |
-| Naive         | 2'520 ms      | 8'063 ms      | 100'788 ms    |
-| BVH           | 5'263 ms      | 9'386 ms      | 25'058  ms    |
+| Naive         | **2'520 ms**  | **8'063 ms**  | 100'788 ms    |
+| BVH           | 5'263 ms      | 9'386 ms      | **25'058  ms**|
