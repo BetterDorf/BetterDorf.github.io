@@ -28,3 +28,13 @@ In order to provide meaningful tests and benchmarks, we used a consistent set of
 ![Scene with 5 spheres](/images/Scene1.png)<br> ![Scene with 68 spheres](/images/Scene8.png)<br> ![Scene with 904 spheres](/images/Scene30.png)<br>
 
 These scenes include five spheres (one for the ground and three larger spheres, plus an additional stray sphere), 68 spheres, and 904 spheres respectively. The location of the stray spheres determined by a seeded random distribution. By benchmarking on scenes of varying sizes and complexity, we were able to evaluate how well our optimizations scaled with the number of objects in the scene. In all cases we will be working with 50 samples per pixels and a depth of 30 on a resolution of 480 by 360 pixels. In this context, samples per pixels mean the number of rays for a given pixel while depth refers to how many rebounds we allow a ray to have before we decide that it is “lost”.
+
+# First Implementation
+We started by following closely the design of [Raytracing in a weekend](https://raytracing.github.io/). Although we also coded in cpp, we disagreed with some of the design decisions made. For instance, we eliminated most shared_ptr from the codebase as sharing ownership of objects wasn't necessary and we believe that shared_ptr should only be used when other ownerships model fail. Instead we decided to work only with the objects directly rather than holding pointers to where they were created.
+
+Another change was the flattening of the hit function. It used to work by recursion, calling hit again when a ray hit an object which we changed to all be processed in a single hit call. This is typically easier for most compilers to optimize and decrease the amount of overhead induced by growing the call stack unnecessarily.
+
+This first implementation had these results :
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| ------------- | ------------- | ------------- | ------------- |
+| Naive         | 2'520 ms      | 8'063 ms      | 100'788 ms    |
