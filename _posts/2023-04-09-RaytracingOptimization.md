@@ -77,5 +77,11 @@ To construct a better BVH we will take an agglomerative approach where we start 
 Our implementation for an agglomerative BVH takes inspiration from [this](https://www.cs.cmu.edu/~blelloch/papers/GHFB13.pdf) [^2] paper from Carnegie Mellon University. With the alteration that we aren’t finding the closest pair each time but simply finding the closest sphere to our current sphere.
 [^2]: Gu, Yan; He, Yong; Fatahalian, Kayvon; Blelloch, Guy (2013). "Efficient BVH Construction via Approximate Agglomerative Clustering" (PDF). HPG '13: Proceedings of the 5th High-Performance Graphics Conference.
 
-Furthermore, to avoid dereferencing pointers and losing time with inheritance we changed the node like so to find nodes and spheres more directly in memory.
+Furthermore, to avoid dereferencing pointers and losing time with inheritance we changed the node like so to find nodes and spheres more directly in memory.<br> 
 ![Bvh node class file showing that it holds indices for the position of the children nodes and spheres in the arrays of the world](/images/codeImage_11.png)<br>
+
+If you are worrying at this point for the growing complexity of the setup phase, don’t. As you can see from these numbers :
+| Method        | 5 Spheres     | 68 Spheres    | 904 Spheres   | 4100 Spheres  | 10'000 Spheres|
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| Making BVH    | >0,001 ms     | 0,011 ms      | 1,86 ms       | 32,5 ms       | 189 ms        |
+Constructing the BVH takes negligible time in comparison to rendering.
