@@ -56,7 +56,7 @@ This problem of performing many intersections test is quite reminiscent of physi
 
 Are there some methods that we could analogously use in our raytracer ? Well, yes there is. What we will use is a Bounding Volume Hierarchy (BVH). The structure of the BVH is a tree where each node has a bounding volume in which all its child nodes fit inside. To figure out which sphere we would hit with a ray we would first interrogate the root node, if we hit its bounding volume, we then check its children bounding volumes etc… until we arrive at a leaf node which would be our hit sphere. The tree typically has a similar amount of parent nodes as there are of leaf objects i.e. 904 objects yields around 904 more nodes in our BVH.
 
-The benefit of the BVH is immediately obvious when we consider that we will quickly descend the tree narrowing down on good candidates and far-off spheres will all be eliminated in a few checks if we do not hit their parent nodes. In the worst cases (for instance, if all spheres are tightly bundled together) the time complexity is not improved, remaining **O(n)**. But given a more typical situation the BVH will result in **O(logn)** calculations. Not to mention that most of these calculations are done on ray to bounding volumes intersections rather that ray to sphere (or any more complex collider type) further reducing the time needed to perform all the checks.
+The benefit of the BVH is immediately obvious when we consider that we will quickly descend the tree narrowing down on good candidates and far-off spheres will all be eliminated in a few checks if we do not hit their parent nodes. In the worst cases (for instance, if all spheres are tightly bundled together) the time complexity is not improved, remaining **O(n)**. But given a more typical situation the BVH will result in **O(logn)** calculations. Not to mention that most of these calculations are done on ray to bounding volumes intersections rather than ray to sphere (or any more complex collider type) further reducing the time needed to perform all the checks.
 
 A simple BVH implementation can be found at [Ray Tracing:The Next Week](https://raytracing.github.io/books/RayTracingTheNextWeek.html) which divides along the spheres based on the x, y or z axes. Implementing it as-is yields the following results for us : <br>
 | Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |<br>
@@ -91,8 +91,8 @@ Speaking of time here are the improvements that we see with this new implementat
 | **Aglo BVH**      | 3'190 ms      | 6'415 ms      | 10'087  ms    |  
 
 This performs much better in high-complexity scenes without sacrificing as much for the simpler ones as we can see when put side-by-side :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
-| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
+| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |  
 | BVH           | 5'263 ms      | 9'386 ms      | 25'058 ms     |
 | **Aglo BVH**      | 3'190 ms      | **6'415 ms**      | **10'087 ms**     |
 
@@ -106,29 +106,29 @@ In our program we decided to use [OpenMP’s library](https://www.openmp.org/). 
 ![Code of the main loop where we send our rays into the scen with the omp command above it](/images/codeImage_12.png)<br>
 
 Yield those results without the BVH :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
 | **Naive MT**      | 3'195 ms      | 3'887 ms      | 19'597 ms     |
 
 Which performs much better than the single-threaded version in most cases :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
-| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
+| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |  
 | **Naive MT**      | 3'195 ms      | **3'887 ms**      | **19'597 ms**     |
 
 We can observe a slight overhead cost that makes it slower for small scenes but as soon as the complexity increases a little the benefits are immediately obvious.
 This leads us to combining both optimizations into one :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
-| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |
-| Naive MT      | 3'195 ms      | 3'887 ms      | 19'597 ms     |
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
+| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |  
+| Naive MT      | 3'195 ms      | 3'887 ms      | 19'597 ms     |  
 | **MT BVH**        | 3'284 ms      | **3'773 ms**      | **4'746 ms**      |
 
 We can obverse a significant speedup for the complex scene where it's only 22% slower going from 68 to 904 spheres.
 
 This leads us to our final comparison table :
-| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |
-| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |
-| BVH           | 5'263 ms      | 9'386 ms      | 25'058 ms     |
-| Aglo BVH      | 3'190 ms      | 6'415 ms      | 10'087 ms     |
-| Naive MT      | 3'195 ms      | 3'887 ms      | 19'597 ms     |
+| Technique     | 5 Spheres     | 68 Spheres    | 904 Spheres   |  
+| Naive         | **2'520 ms**      | 8'063 ms      | 100'788 ms    |  
+| BVH           | 5'263 ms      | 9'386 ms      | 25'058 ms     |  
+| Aglo BVH      | 3'190 ms      | 6'415 ms      | 10'087 ms     |  
+| Naive MT      | 3'195 ms      | 3'887 ms      | 19'597 ms     |  
 | **MT BVH**        | 3'284 ms      | **3'773 ms**      | **4'746 ms**      |
 
 For those that prefer graphical comparisons : <br>
