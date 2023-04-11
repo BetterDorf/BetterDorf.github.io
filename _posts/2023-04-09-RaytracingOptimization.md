@@ -137,3 +137,8 @@ This leads us to our final comparison table :
 | Aglo BVH      | 3'190 ms      | 6'415 ms      | 10'087 ms     |
 | Naive MT      | 3'195 ms      | 3'887 ms      | 19'597 ms     |
 | **MT BVH**    | 3'284 ms      | **3'773 ms**  | **4'746 ms**  |
+
+For those that prefer graphical comparisons : <br>
+![](/images/5Obj.PNG)<br>
+![](/images/68Obj.PNG)<br>
+![](/images/904Obj.PNG)<br>
