@@ -156,3 +156,5 @@ Finally, a small hack that was given to us by [Frédéric Dubouchet](https://git
 Although powerful, this trick wouldn't work as is for us in this implementation because we shoot ray with slight variations in origin to simulate a camera's focal length.
 
 This concludes our small tour of the optimizations we performed on the classic [“Ray Tracing In One Weekend”](https://raytracing.github.io/).
+
+Our code can be found [here](https://github.com/BetterDorf/GPR5204-Raytracing).
