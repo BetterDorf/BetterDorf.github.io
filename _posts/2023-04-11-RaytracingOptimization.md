@@ -185,7 +185,7 @@ This performs much better in high-complexity scenes without sacrificing as much 
     </tr>
     <tr>
         <td>Naive</td>
-      <td><br>2&#39;520 ms</br></td>
+      <td><b>2&#39;520 ms</b></td>
         <td>8&#39;063 ms</td>
         <td>100&#39;788 ms</td>
     </tr>
