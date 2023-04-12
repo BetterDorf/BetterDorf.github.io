@@ -113,8 +113,8 @@ Which can be compared with our base performances:
     </tr>
     <tr>
         <td>Naive</td>
-        <td><br>2&#39;520 ms</br></td>
-        <td><br>8&#39;063 ms</br></td>
+        <td><b>2&#39;520 ms</b></td>
+        <td><b>8&#39;063 ms</b></td>
         <td>100&#39;788 ms</td>
     </tr>
     <tr>
